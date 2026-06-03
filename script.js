@@ -6,31 +6,22 @@ const playingBoard = () => {
   for (let i = 0; i < row; i++) {
     gameBoard[i] = [];
     for (let j = 0; j < column; j++) {
-      gameBoard[i].push(block());
+      gameBoard[i].push(" ");
     }
   }
 
   const getBoard = () => gameBoard;
 
-  function block() {
-    let value = " ";
-    return value;
-  }
-
   const addSign = (row, column, sign) => {
     gameBoard[row][column] = sign;
   };
 
-  const showBoard = () => {
-    const updatedBoard = gameBoard.filter((element) => element != " ");
-    //showBoard is of no use , getBoard will also do the work
-    return updatedBoard;
-  };
-  return { addSign, block, getBoard, showBoard };
+  return { addSign, getBoard };
 };
 
 function gameController(player1 = "Player One", player2 = "Player two") {
   const gameBoard = playingBoard();
+  let count = true;
 
   const players = [
     {
@@ -46,15 +37,18 @@ function gameController(player1 = "Player One", player2 = "Player two") {
   let activePlayer = players[0];
 
   const switchPlayerTurn = () => {
-    if (activePlayer === null) return;
+    if (count === false) return;
 
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
   };
-  const getActivePlayer = () => activePlayer;
+  const getActivePlayer = () => {
+    if (count === false) return;
+    return activePlayer;
+  };
   const showNewRound = () => {
-    if (activePlayer === null) return;
-    console.log(gameBoard.showBoard());
+    if (count === false) return;
 
+    console.log(gameBoard.getBoard());
     console.log(
       `${getActivePlayer().name}'s turn.`,
       `Sign:${getActivePlayer().sign}`,
@@ -63,25 +57,31 @@ function gameController(player1 = "Player One", player2 = "Player two") {
 
   const playRound = (row, column) => {
     board = gameBoard.getBoard();
-    //boardFull
+    const invalidTurns = (function () {
+      //condition for Invalid turn
+      if (row > 2 || column > 2) {
+        activePlayer = getActivePlayer().sign === "X" ? players[0] : players[1];
+        console.log("Invalid Turn - Row and column out of bound");
+        console.log(`${getActivePlayer().name}'s turn.`);
+        return false;
+      }
 
-    if (row > 2 || column > 2) {
-      activePlayer = getActivePlayer().sign === "X" ? players[0] : players[1];
-      console.log("Invalid Turn - Row and column out of bound");
-      console.log(`${getActivePlayer().name}'s turn.`);
-      return;
-    }
-    if (board[row][column] === "X" || board[row][column] === "O") {
-      activePlayer = getActivePlayer().sign === "X" ? players[0] : players[1];
-      console.log("Invalid Turn- block already marked");
-      console.log(`${getActivePlayer().name}'s turn.`);
-      return;
-    }
+      //condition for already marked block
+      if (board[row][column] === "X" || board[row][column] === "O") {
+        activePlayer = getActivePlayer().sign === "X" ? players[0] : players[1];
+        console.log("Invalid Turn- block already marked");
+        console.log(`${getActivePlayer().name}'s turn.`);
+        return false;
+      }
+      return true;
+    })();
+    if (invalidTurns === false) return;
+
+    //adding sign to desired place
     if (board[row][column] != "X" || board[row][column] != "O") {
-      forSign = getActivePlayer().sign;
-      gameBoard.addSign(row, column, forSign);
+      gameBoard.addSign(row, column, getActivePlayer().sign);
     }
-    //grid full
+
     isBoardFull = () => {
       if (
         board[0][0] != " " &&
@@ -93,16 +93,16 @@ function gameController(player1 = "Player One", player2 = "Player two") {
         board[2][0] != " " &&
         board[2][1] != " " &&
         board[2][2] != " " &&
-        activePlayer != null
+        count != false
       ) {
-        activePlayer = null;
-        console.log(gameBoard.showBoard());
+        count = false;
+        console.log(gameBoard.getBoard());
         console.log("Grid Full");
       }
     };
-    //win logic
+
     const winner = () => {
-      const newBoard = gameBoard.showBoard();
+      const newBoard = gameBoard.getBoard();
 
       for (let i = 0; i < 3; i++) {
         if (
@@ -115,20 +115,14 @@ function gameController(player1 = "Player One", player2 = "Player two") {
           (newBoard[0][2] === "O" &&
             newBoard[1][1] === "O" &&
             newBoard[2][0] === "O") ||
-          (newBoard[0][i] === "O" && // newBoard[0][i],newBoard[1][i],newBoard[2][i]will also work
+          (newBoard[0][i] === "O" &&
             newBoard[1][i] === "O" &&
             newBoard[2][i] === "O")
-          // ||
-          // (newBoard[i][1] === "O" &&
-          //   newBoard[i + 1][1] === "O" &&
-          //   newBoard[i + 2][1] === "O") ||
-          // (newBoard[i][2] === "O" &&
-          //   newBoard[i + 1][2] === "O" &&
-          //   newBoard[i + 2][2] === "O")
         ) {
-          activePlayer = null;
-          console.log(gameBoard.showBoard());
+          console.log(gameBoard.getBoard());
           console.log("Player 2 won");
+          count = false;
+
           return;
         }
       }
@@ -143,30 +137,27 @@ function gameController(player1 = "Player One", player2 = "Player two") {
           (newBoard[0][2] === "X" &&
             newBoard[1][1] === "X" &&
             newBoard[2][0] === "X") ||
-          (newBoard[0][i] === "X" && // newBoard[0][i],newBoard[1][i],newBoard[2][i]will also work
+          (newBoard[0][i] === "X" &&
             newBoard[1][i] === "X" &&
             newBoard[2][i] === "X")
-          //||
-          // (newBoard[0][i] === "X" &&
-          //   newBoard[1][i] === "X" &&
-          //   newBoard[2][i] === "X") ||
-          // (newBoard[0][i] === "X" &&
-          //   newBoard[1][i] === "X" &&
-          //   newBoard[2][i] === "X")
         ) {
-          activePlayer = null;
-          console.log(gameBoard.showBoard());
+          console.log(gameBoard.getBoard());
           console.log("Player 1 won");
+
+          count = false;
+
           return;
         }
       }
     };
-    //win logic
+
     winner();
     isBoardFull();
     switchPlayerTurn();
     showNewRound();
+    return;
   };
+  //This is to print starting board
   showNewRound();
 
   return {
@@ -176,3 +167,25 @@ function gameController(player1 = "Player One", player2 = "Player two") {
 }
 
 const game = gameController();
+const displaySign = game.playRound;
+
+const displayBoard = document.querySelector(".playing_board");
+
+// const board = playingBoard.gameBoard;
+for (let i = 0; i < 3; i++) {
+  for (let j = 0; j < 3; j++) {
+    const block = document.createElement("div");
+    block.classList.add("blocks_for_board");
+    displayBoard.appendChild(block);
+    block.addEventListener("click", () => {
+      if (block.textContent === "X" || block.textContent === "O") {
+        alert("Invalid input");
+        return;
+      }
+      block.textContent = game.getActivePlayer().sign;
+      displaySign(i, j);
+    });
+  }
+}
+
+function showGame() {}

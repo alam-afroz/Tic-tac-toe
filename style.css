@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@100..800&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --primary_color: #1a1423;
+  --secondary_color: #3d314a;
+  --heading_color: #684756;
+  --tertiary_color: #96705b;
+  --text_color: #ab8476;
+}
+
+.container {
+  height: 100vh;
+  background-color: var(--primary_color);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.playing_board {
+  height: 450px;
+  width: 450px;
+
+  border-radius: 8px;
+  background-color: var(--tertiary_color);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+}
+.blocks_for_board {
+  height: 145px;
+  width: 145px;
+  background-color: var(--secondary_color);
+  color: white;
+  font-size: 4rem;
+  font-family: "Playpen Sans", cursive;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
