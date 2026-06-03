@@ -176,5 +176,3 @@ function gameController(player1 = "Player One", player2 = "Player two") {
 }
 
 const game = gameController();
-// game chala ke dekhna hai -
-// 1. ek baar grid full krke
