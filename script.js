@@ -19,18 +19,27 @@ const playingBoard = () => {
   return { addSign, getBoard };
 };
 
-function gameController(player1 = "Player One", player2 = "Player two") {
+function gameController(
+  player1 = "Player One",
+  player2 = "Player two",
+  sign1 = "X",
+  sign2 = "O",
+) {
   const gameBoard = playingBoard();
-  let count = true;
+  let count = true; // this is replaces by boardfull and activeplayer.winStatus
+  let boardFull = false;
+  isBoardFull = () => boardFull;
 
   const players = [
     {
       name: player1,
-      sign: "X",
+      sign: sign1,
+      winStatus: false,
     },
     {
       name: player2,
-      sign: "O",
+      sign: sign2,
+      winStatus: false,
     },
   ];
 
@@ -38,16 +47,32 @@ function gameController(player1 = "Player One", player2 = "Player two") {
 
   const switchPlayerTurn = () => {
     if (count === false) return;
+    if (isBoardFull === true) {
+      // activePlayer = {
+      //   name: getActivePlayer().name,
+      //   sign: getActivePlayer().sign,
+      //   winStatus: getActivePlayer().winStatus,
+      // };
+      return;
+    }
 
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
   };
   const getActivePlayer = () => {
+    if (activePlayer.winStatus === true) {
+      return activePlayer;
+    }
     if (count === false) return;
     return activePlayer;
   };
   const showNewRound = () => {
     if (count === false) return;
-
+    if (boardFull === true) {
+      return;
+    }
+    if (activePlayer.winStatus === true) {
+      return;
+    }
     console.log(gameBoard.getBoard());
     console.log(
       `${getActivePlayer().name}'s turn.`,
@@ -95,9 +120,11 @@ function gameController(player1 = "Player One", player2 = "Player two") {
         board[2][2] != " " &&
         count != false
       ) {
-        count = false;
+        // count = false;
+        boardFull = true;
         console.log(gameBoard.getBoard());
         console.log("Grid Full");
+        return;
       }
     };
 
@@ -121,6 +148,7 @@ function gameController(player1 = "Player One", player2 = "Player two") {
         ) {
           console.log(gameBoard.getBoard());
           console.log("Player 2 won");
+          getActivePlayer().winStatus = true;
           count = false;
 
           return;
@@ -144,6 +172,12 @@ function gameController(player1 = "Player One", player2 = "Player two") {
           console.log(gameBoard.getBoard());
           console.log("Player 1 won");
 
+          activePlayer = {
+            name: player1,
+            sign: "X",
+            winStatus: true,
+          };
+          console.log(getActivePlayer().winStatus);
           count = false;
 
           return;
@@ -155,7 +189,6 @@ function gameController(player1 = "Player One", player2 = "Player two") {
     isBoardFull();
     switchPlayerTurn();
     showNewRound();
-    return;
   };
   //This is to print starting board
   showNewRound();
@@ -163,29 +196,77 @@ function gameController(player1 = "Player One", player2 = "Player two") {
   return {
     playRound,
     getActivePlayer,
+    isBoardFull,
   };
 }
+const showGame = (function () {
+  const game = gameController();
 
-const game = gameController();
-const displaySign = game.playRound;
+  const displaySign = game.playRound;
 
-const displayBoard = document.querySelector(".playing_board");
+  let count = true;
 
-// const board = playingBoard.gameBoard;
-for (let i = 0; i < 3; i++) {
-  for (let j = 0; j < 3; j++) {
-    const block = document.createElement("div");
-    block.classList.add("blocks_for_board");
-    displayBoard.appendChild(block);
-    block.addEventListener("click", () => {
-      if (block.textContent === "X" || block.textContent === "O") {
-        alert("Invalid input");
-        return;
-      }
-      block.textContent = game.getActivePlayer().sign;
-      displaySign(i, j);
-    });
+  const displayBoard = document.querySelector(".playing_board");
+  const gameStatus = document.querySelector(".game_status");
+
+  gameStatus.textContent = `${game.getActivePlayer().name}'s Turn , Sign : ${game.getActivePlayer().sign}`;
+
+  function updateGameStatus() {
+    gameStatus.style.color = "wheat";
+    gameStatus.textContent = `${game.getActivePlayer().name}'s Turn , Sign : ${game.getActivePlayer().sign}`;
   }
-}
+  function markingDisplayBoard(block, i, j) {
+    if (game.getActivePlayer().winStatus === true) {
+      // gameStatus.textContent = `${game.getActivePlayer().name} has won , Sign : ${game.getActivePlayer().sign}`;
+      count = false;
 
-function showGame() {}
+      return;
+    }
+    if (block.textContent === "X" || block.textContent === "O") {
+      gameStatus.style.color = "red";
+      gameStatus.textContent = "box already filled";
+      count = false;
+      return;
+    }
+    block.textContent = game.getActivePlayer().sign;
+
+    displaySign(i, j);
+    updateGameStatus();
+  }
+
+  function showWinner() {
+    // if (count === false) return;
+    if (game.getActivePlayer().winStatus === true) {
+      gameStatus.style.color = "green";
+      gameStatus.style.fontWeight = "bold";
+      gameStatus.textContent = `${game.getActivePlayer().name} has won , Sign : ${game.getActivePlayer().sign}`;
+    }
+    return;
+  }
+  const container = document.querySelector(".container");
+
+  // gameStatus.textContent = `${game.getActivePlayer().name}'s Turn , Sign : ${game.getActivePlayer().sign}`;
+  // const board = playingBoard.gameBoard;
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      const block = document.createElement("div");
+
+      block.classList.add("blocks_for_board");
+
+      displayBoard.appendChild(block);
+
+      block.addEventListener("click", () => {
+        markingDisplayBoard(block, i, j);
+        // updateGameStatus();
+        showWinner();
+
+        if (game.isBoardFull() === true) {
+          gameStatus.style.color = "grey";
+          gameStatus.textContent = "Board full - Game over,No one wins";
+        }
+      });
+    }
+  }
+
+  // updateGameStatus();
+})();
