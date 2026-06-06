@@ -20,7 +20,7 @@
                   name="player_one"
                   maxlength="20"
                   placeholder="no more than 20 letters"
-                  value="player_one"
+                  required
                 />
               </p>
               <p>
@@ -31,6 +31,7 @@
                   id="player_one_sign_X"
                   name="player_one_sign"
                   value="X"
+                  required
                 />
                 <label for="player_one_sign_O"> O</label>
                 <input
@@ -38,6 +39,7 @@
                   name="player_one_sign"
                   id="player_one_sign_O"
                   value="O"
+                  required
                 />
               </p>
             </div>
@@ -50,7 +52,7 @@
                   name="player_two"
                   maxlength="20"
                   placeholder="no more than 20 letters"
-                  value="player_two"
+                  required
                 />
               </p>
               <p>
@@ -61,6 +63,7 @@
                   id="player_two_sign_X"
                   name="player_two_sign"
                   value="X"
+                  required
                 />
                 <label for="player_two_sign_O"> O</label>
                 <input
@@ -68,13 +71,14 @@
                   id="player_two_sign_O"
                   name="player_two_sign"
                   value="O"
+                  required
                 />
               </p>
             </div>
             <button type="submit" class="submit" value="default">Play</button>
-            <button class="play_without_filling" value="default">
+            <div id="play_without_filling" value="default">
               Play without filling
-            </button>
+            </div>
           </form>
         </div>
       </dialog>
@@ -83,7 +87,7 @@
       </div>
       <div class="website_title">Tic Tac Toe</div>
 
-      <div class="game_options">
+      <div class="player_info">
         <p class="player1_info">Player 1 : X</p>
         <p class="player2_info">Player 2 : O</p>
       </div>
@@ -110,6 +114,10 @@
             >Tic Tac Toe
           </a>
         </span>
+      </div>
+      <div class="game_options">
+        <button class="reset">RESET</button>
+        <button class="restart">RESTART</button>
       </div>
     </div>
     <!-- javascript below -->

@@ -65,7 +65,7 @@
   align-self: end;
   margin-bottom: 16px;
 }
-.game_options {
+.player_info {
   width: 100%;
   height: 40%;
   grid-row: 2/3;
@@ -131,14 +131,15 @@ form {
   height: 100%;
   display: flex;
   flex-direction: column;
+
   font-size: 20px;
   justify-content: space-between;
   font-family: "DynaPuff", sans-serif;
 }
 input[type="radio"] {
   appearance: none;
-  height: 16px;
-  width: 16px;
+  height: 20px;
+  width: 20px;
   background-color: white;
   /* position: relative;
   bottom: 2px;
@@ -158,7 +159,7 @@ input[disabled] {
 }
 input[type="text"] {
   appearance: none;
-  height: 36px;
+  height: 48px;
   width: 50%;
   margin-left: 4px;
   color: var(--tertiary_color);
@@ -177,7 +178,7 @@ button {
 }
 .user_player_one > p,
 .user_player_two > p {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 button {
   appearance: none;
@@ -191,9 +192,29 @@ button {
   color: var(--primary_color);
   font-size: 24px;
 }
-.play_without_filling {
+#play_without_filling {
+  height: 77px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: rgba(255, 255, 255, 0);
   color: var(--extra_color);
   border: 3px solid var(--extra_color);
   font-size: 24px;
+  margin: 12px 0px 8px 0px;
+  border-radius: 12px;
+  font-family: "Playpen Sans", sans-serif;
+  font-weight: bold;
+}
+.reset {
+  height: 32px;
+  width: 60px;
+  background-color: var(--heading_color);
+  color: var(--extra_color);
+}
+.restart {
+  height: 32px;
+  width: 72px;
+  background-color: var(--extra_color);
+  color: var(--heading_color);
 }

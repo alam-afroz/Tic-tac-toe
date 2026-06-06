@@ -19,79 +19,7 @@ const playingBoard = () => {
   return { addSign, getBoard };
 };
 
-const takeUserNames = () => {
-  const dialogBox = document.querySelector("dialog");
-  dialogBox.showModal();
-
-  const form = document.getElementById("user_form");
-
-  // const disableRadios = (function (e) {
-  const radioForPlayerOneSignX = document.querySelector("#player_one_sign_X");
-  const radioForPlayerTwoSignX = document.querySelector("#player_two_sign_X");
-  const radioForPlayerOneSignO = document.querySelector("#player_one_sign_O");
-  const radioForPlayerTwoSignO = document.querySelector("#player_two_sign_O");
-  radioForPlayerOneSignX.addEventListener("change", (e) => {
-    radioForPlayerTwoSignO.disabled = true;
-
-    radioForPlayerOneSignO.checked = false;
-    radioForPlayerTwoSignX.disabled = true;
-    radioForPlayerTwoSignO.checked = true;
-  });
-  radioForPlayerTwoSignX.addEventListener("change", (e) => {
-    radioForPlayerOneSignO.disabled = false;
-    radioForPlayerOneSignX.disabled = true;
-    radioForPlayerOneSignO.checked = true;
-    radioForPlayerTwoSignO.checked = false;
-  });
-  radioForPlayerOneSignO.addEventListener("change", (e) => {
-    radioForPlayerTwoSignX.disabled = false;
-    radioForPlayerOneSignX.checked = false;
-    radioForPlayerTwoSignX.checked = true;
-    radioForPlayerTwoSignO.disabled = true;
-  });
-  radioForPlayerTwoSignO.addEventListener("change", (e) => {
-    radioForPlayerOneSignX.disabled = false;
-
-    radioForPlayerOneSignX.checked = true;
-    radioForPlayerOneSignO.disabled = true;
-    radioForPlayerTwoSignX.checked = false;
-  });
-
-  // })();
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    // console.log(playerOneName, signPlayerOne, playerTwoName, signPlayerTwo);
-    // form.reset();
-    dialogBox.close();
-  });
-  const userData = new FormData(form);
-
-  const playerOneName = userData.get("player_one");
-  const signPlayerOne = userData.get("player_one_sign");
-
-  const playerTwoName = userData.get("player_two");
-  const signPlayerTwo = userData.get("player_two_sign");
-  let userGivenData = Object.fromEntries(userData.entries());
-  console.log(userGivenData);
-  // {
-  //   player1: playerOneName,
-  //   sign1: signPlayerOne,
-  //   player2: playerTneName,
-  //   sign2: signPlayerTwo,
-  // };
-  const userGiven = () => userGivenData;
-  return userGiven();
-};
-takeUserNames;
-
-function gameController(
-  player1 = "Player One",
-  sign1 = "X",
-  player2 = "Player two",
-  sign2 = "O",
-) {
+function gameController(player1, sign1, player2, sign2) {
   const gameBoard = playingBoard();
   let count = true; // this is replaces by boardfull and activeplayer.winStatus
   let boardFull = false;
@@ -266,8 +194,8 @@ function gameController(
     isBoardFull,
   };
 }
-const showGame = (function () {
-  const game = gameController();
+function showGame(player1, sign1, player2, sign2) {
+  const game = gameController(player1, sign1, player2, sign2);
 
   const displaySign = game.playRound;
 
@@ -336,4 +264,85 @@ const showGame = (function () {
   }
 
   // updateGameStatus();
+}
+
+const takeUserNames = (function () {
+  const dialogBox = document.querySelector("dialog");
+  dialogBox.showModal();
+
+  const form = document.getElementById("user_form");
+  const inputPlayerOne = document.getElementById("player_one");
+
+  const inputPlayerTwo = document.getElementById("player_two");
+  // const disableRadios = (function (e) {
+  const radioForPlayerOneSignX = document.querySelector("#player_one_sign_X");
+  const radioForPlayerTwoSignX = document.querySelector("#player_two_sign_X");
+  const radioForPlayerOneSignO = document.querySelector("#player_one_sign_O");
+  const radioForPlayerTwoSignO = document.querySelector("#player_two_sign_O");
+  radioForPlayerOneSignX.addEventListener("change", (e) => {
+    radioForPlayerTwoSignO.disabled = true;
+
+    radioForPlayerOneSignO.checked = false;
+    radioForPlayerTwoSignX.disabled = true;
+    radioForPlayerTwoSignO.checked = true;
+  });
+  radioForPlayerTwoSignX.addEventListener("change", (e) => {
+    radioForPlayerOneSignO.disabled = false;
+    radioForPlayerOneSignX.disabled = true;
+    radioForPlayerOneSignO.checked = true;
+    radioForPlayerTwoSignO.checked = false;
+  });
+  radioForPlayerOneSignO.addEventListener("change", (e) => {
+    radioForPlayerTwoSignX.disabled = false;
+    radioForPlayerOneSignX.checked = false;
+    radioForPlayerTwoSignX.checked = true;
+    radioForPlayerTwoSignO.disabled = true;
+  });
+  radioForPlayerTwoSignO.addEventListener("change", (e) => {
+    radioForPlayerOneSignX.disabled = false;
+
+    radioForPlayerOneSignX.checked = true;
+    radioForPlayerOneSignO.disabled = true;
+    radioForPlayerTwoSignX.checked = false;
+  });
+
+  // })();
+  const playWithoutFilling = document.getElementById("play_without_filling");
+  playWithoutFilling.addEventListener("click", () => {
+    document.getElementById("player_one").required = false;
+
+    document.getElementById("player_one_sign_X").required = false;
+
+    document.getElementById("player_one_sign_O").required = false;
+
+    document.getElementById("player_two").required = false;
+
+    document.getElementById("player_two_sign_X").required = false;
+
+    document.getElementById("player_two_sign_O").required = false;
+
+    showGame("Player one", "X", "Player Two", "O");
+    form.reset();
+    dialogBox.close();
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const userData = new FormData(event.target);
+    const inputSignPlayerOne = userData.get("player_one_sign");
+    const inputSignPlayerTwo = userData.get("player_two_sign");
+
+    let signPlayerOne = " ";
+    let signPlayerTwo = " ";
+
+    signPlayerOne = inputSignPlayerOne === "X" ? "X" : "O";
+    signPlayerTwo = inputSignPlayerTwo === "X" ? "X" : "O";
+
+    playerOneName = document.getElementById("player_one").value;
+    playerTwoName = document.getElementById("player_two").value;
+
+    showGame(playerOneName, signPlayerOne, playerTwoName, signPlayerTwo);
+    form.reset();
+    dialogBox.close();
+  });
 })();
