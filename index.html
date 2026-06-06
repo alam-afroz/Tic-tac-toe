@@ -8,18 +8,90 @@
   </head>
   <body>
     <div class="container">
+      <dialog>
+        <div class="form">
+          <form id="user_form">
+            <div class="user_player_one">
+              <p>
+                <label for="player_one">Player One Name</label>
+                <input
+                  type="text"
+                  id="player_one"
+                  name="player_one"
+                  maxlength="20"
+                  placeholder="no more than 20 letters"
+                  value="player_one"
+                />
+              </p>
+              <p>
+                <span>Sign :</span>
+                <label for="player_one_sign_X">X</label>
+                <input
+                  type="radio"
+                  id="player_one_sign_X"
+                  name="player_one_sign"
+                  value="X"
+                />
+                <label for="player_one_sign_O"> O</label>
+                <input
+                  type="radio"
+                  name="player_one_sign"
+                  id="player_one_sign_O"
+                  value="O"
+                />
+              </p>
+            </div>
+            <div class="user_player_two">
+              <p>
+                <label for="player_two">Player Two Name</label>
+                <input
+                  type="text"
+                  id="player_two"
+                  name="player_two"
+                  maxlength="20"
+                  placeholder="no more than 20 letters"
+                  value="player_two"
+                />
+              </p>
+              <p>
+                <span>Sign :</span>
+                <label for="player_two_sign_X">X</label>
+                <input
+                  type="radio"
+                  id="player_two_sign_X"
+                  name="player_two_sign"
+                  value="X"
+                />
+                <label for="player_two_sign_O"> O</label>
+                <input
+                  type="radio"
+                  id="player_two_sign_O"
+                  name="player_two_sign"
+                  value="O"
+                />
+              </p>
+            </div>
+            <button type="submit" class="submit" value="default">Play</button>
+            <button class="play_without_filling" value="default">
+              Play without filling
+            </button>
+          </form>
+        </div>
+      </dialog>
       <div class="website_logo">
         <img class="logo" src="images/tic_tac_toe_logo.svg" alt="" />
       </div>
       <div class="website_title">Tic Tac Toe</div>
 
       <div class="game_options">
-        <p>game_option</p>
+        <p class="player1_info">Player 1 : X</p>
+        <p class="player2_info">Player 2 : O</p>
       </div>
+      <hr />
       <p class="game_status"></p>
       <div class="playing_board"></div>
       <div class="footer">
-        <span>
+        <span class="footer_text">
           Made by
           <a
             href="https://github.com/alam-afroz"
@@ -29,7 +101,7 @@
           >
         </span>
 
-        <span>
+        <span class="footer_text">
           View on Github
           <a
             href="https://github.com/alam-afroz/Tic-tac-toe.git"

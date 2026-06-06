@@ -12,6 +12,7 @@
   --heading_color: #684756;
   --tertiary_color: #96705b;
   --text_color: #ab8476;
+  --extra_color: wheat;
 }
 .logo {
   height: 64px;
@@ -20,7 +21,7 @@
   height: 100vh;
   width: 100vw;
   background-color: var(--primary_color);
-  color: wheat;
+  color: var(--extra_color);
   display: grid;
   grid-template-rows: 1fr 1fr 3fr 1fr;
   grid-template-columns: 1fr 3fr 1fr;
@@ -61,13 +62,23 @@
   grid-row: 2/3;
   font-size: min(3vh, 28px);
   font-family: "DynaPuff", sans-serif;
-  /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
+  align-self: end;
+  margin-bottom: 16px;
 }
 .game_options {
+  width: 100%;
+  height: 40%;
   grid-row: 2/3;
   grid-column: 2/3;
   align-self: start;
+  font-size: 20px;
+  color: rgb(179, 229, 245);
+  border: 3px solid rgba(255, 255, 255, 0.329);
+  border-radius: 16px;
   font-family: "DynaPuff", sans-serif;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 .website_title {
   grid-row: 1/2;
@@ -75,13 +86,19 @@
   font-family: "DynaPuff", sans-serif;
   font-size: 4rem;
 }
+hr {
+  width: 30px;
+}
 .footer {
+  width: 80%;
   grid-row: 4/5;
   grid-column: 2/3;
   color: rgba(128, 128, 128, 0.574);
   font-family: "DynaPuff", cursive;
   align-self: end;
   padding-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
 }
 a {
   margin-left: 4px;
@@ -93,6 +110,90 @@ a {
 a:hover {
   color: rgb(191, 191, 246);
 }
-span {
-  margin-right: 28px;
+
+dialog {
+  justify-self: center;
+  align-self: center;
+  width: 50vh;
+  height: 40vh;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: var(--primary_color);
+  color: var(--text_color);
+}
+dialog::backdrop {
+  background-color: var(--primary_color);
+}
+.form {
+  height: 100%;
+}
+form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  justify-content: space-between;
+  font-family: "DynaPuff", sans-serif;
+}
+input[type="radio"] {
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  background-color: white;
+  /* position: relative;
+  bottom: 2px;
+  left: 2px; */
+  margin: 0px 4px;
+}
+input[type="radio"]:checked {
+  appearance: none;
+  content: "";
+  background-color: rgb(96, 148, 96);
+  border-radius: 8px;
+  border: 2px solid white;
+}
+input[disabled] {
+  background: rgba(128, 128, 128, 0.455);
+  border: 2px solid rgba(255, 0, 0, 0.4);
+}
+input[type="text"] {
+  appearance: none;
+  height: 36px;
+  width: 50%;
+  margin-left: 4px;
+  color: var(--tertiary_color);
+  font-family: "Playpen Sans", sans-serif;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+}
+.user_player_one,
+.user_player_two {
+  height: 30%;
+  padding: 12px;
+}
+button {
+  height: 15%;
+}
+.user_player_one > p,
+.user_player_two > p {
+  margin-bottom: 10px;
+}
+button {
+  appearance: none;
+  margin: 4px 0px;
+  border-radius: 12px;
+  font-family: "Playpen Sans", sans-serif;
+  font-weight: bold;
+}
+.submit {
+  background-color: white;
+  color: var(--primary_color);
+  font-size: 24px;
+}
+.play_without_filling {
+  background-color: rgba(255, 255, 255, 0);
+  color: var(--extra_color);
+  border: 3px solid var(--extra_color);
+  font-size: 24px;
 }

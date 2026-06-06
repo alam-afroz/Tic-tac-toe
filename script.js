@@ -19,10 +19,77 @@ const playingBoard = () => {
   return { addSign, getBoard };
 };
 
+const takeUserNames = () => {
+  const dialogBox = document.querySelector("dialog");
+  dialogBox.showModal();
+
+  const form = document.getElementById("user_form");
+
+  // const disableRadios = (function (e) {
+  const radioForPlayerOneSignX = document.querySelector("#player_one_sign_X");
+  const radioForPlayerTwoSignX = document.querySelector("#player_two_sign_X");
+  const radioForPlayerOneSignO = document.querySelector("#player_one_sign_O");
+  const radioForPlayerTwoSignO = document.querySelector("#player_two_sign_O");
+  radioForPlayerOneSignX.addEventListener("change", (e) => {
+    radioForPlayerTwoSignO.disabled = true;
+
+    radioForPlayerOneSignO.checked = false;
+    radioForPlayerTwoSignX.disabled = true;
+    radioForPlayerTwoSignO.checked = true;
+  });
+  radioForPlayerTwoSignX.addEventListener("change", (e) => {
+    radioForPlayerOneSignO.disabled = false;
+    radioForPlayerOneSignX.disabled = true;
+    radioForPlayerOneSignO.checked = true;
+    radioForPlayerTwoSignO.checked = false;
+  });
+  radioForPlayerOneSignO.addEventListener("change", (e) => {
+    radioForPlayerTwoSignX.disabled = false;
+    radioForPlayerOneSignX.checked = false;
+    radioForPlayerTwoSignX.checked = true;
+    radioForPlayerTwoSignO.disabled = true;
+  });
+  radioForPlayerTwoSignO.addEventListener("change", (e) => {
+    radioForPlayerOneSignX.disabled = false;
+
+    radioForPlayerOneSignX.checked = true;
+    radioForPlayerOneSignO.disabled = true;
+    radioForPlayerTwoSignX.checked = false;
+  });
+
+  // })();
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    // console.log(playerOneName, signPlayerOne, playerTwoName, signPlayerTwo);
+    // form.reset();
+    dialogBox.close();
+  });
+  const userData = new FormData(form);
+
+  const playerOneName = userData.get("player_one");
+  const signPlayerOne = userData.get("player_one_sign");
+
+  const playerTwoName = userData.get("player_two");
+  const signPlayerTwo = userData.get("player_two_sign");
+  let userGivenData = Object.fromEntries(userData.entries());
+  console.log(userGivenData);
+  // {
+  //   player1: playerOneName,
+  //   sign1: signPlayerOne,
+  //   player2: playerTneName,
+  //   sign2: signPlayerTwo,
+  // };
+  const userGiven = () => userGivenData;
+  return userGiven();
+};
+takeUserNames;
+
 function gameController(
   player1 = "Player One",
-  player2 = "Player two",
   sign1 = "X",
+  player2 = "Player two",
   sign2 = "O",
 ) {
   const gameBoard = playingBoard();
