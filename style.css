@@ -114,8 +114,8 @@ a:hover {
 dialog {
   justify-self: center;
   align-self: center;
-  width: 50vh;
-  height: 40vh;
+  width: 60vh;
+  height: 50vh;
   padding: 8px;
   border-radius: 8px;
   background-color: var(--primary_color);
