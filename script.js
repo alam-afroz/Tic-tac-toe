@@ -194,6 +194,19 @@ function gameController(player1, sign1, player2, sign2) {
     isBoardFull,
   };
 }
+
+function restartGame(player1, sign1, player2, sign2) {
+  const restart = document.querySelector(".restart");
+
+  restart.addEventListener("click", () => {
+    console.clear();
+    document
+      .querySelectorAll(".blocks_for_board")
+      .forEach((block) => block.remove());
+    showGame(player1, sign1, player2, sign2);
+  });
+}
+
 function showGame(player1, sign1, player2, sign2) {
   const game = gameController(player1, sign1, player2, sign2);
 
@@ -203,9 +216,11 @@ function showGame(player1, sign1, player2, sign2) {
 
   const displayBoard = document.querySelector(".playing_board");
   const gameStatus = document.querySelector(".game_status");
-
-  gameStatus.textContent = `${game.getActivePlayer().name}'s Turn , Sign : ${game.getActivePlayer().sign}`;
-
+  (function startingGameStatus() {
+    gameStatus.style.fontWeight = "normal";
+    gameStatus.style.color = "wheat";
+    gameStatus.textContent = `${game.getActivePlayer().name}'s Turn , Sign : ${game.getActivePlayer().sign}`;
+  })();
   function updateGameStatus() {
     gameStatus.style.color = "wheat";
     gameStatus.textContent = `${game.getActivePlayer().name}'s Turn , Sign : ${game.getActivePlayer().sign}`;
@@ -245,13 +260,13 @@ function showGame(player1, sign1, player2, sign2) {
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
       const block = document.createElement("div");
-
       block.classList.add("blocks_for_board");
 
       displayBoard.appendChild(block);
 
       block.addEventListener("click", () => {
         markingDisplayBoard(block, i, j);
+
         // updateGameStatus();
         showWinner();
 
@@ -262,11 +277,16 @@ function showGame(player1, sign1, player2, sign2) {
       });
     }
   }
+  // const playerInfo = () => {
+  //   return [player1, sign1, player2, sign2];
+  // };
+  restartGame(player1, sign1, player2, sign2);
 
-  // updateGameStatus();
+  // return playerInfo();
+  return displayBoard;
 }
 
-const takeUserNames = (function () {
+const takeUserNames = function () {
   const dialogBox = document.querySelector("dialog");
   dialogBox.showModal();
 
@@ -322,7 +342,7 @@ const takeUserNames = (function () {
     document.getElementById("player_two_sign_O").required = false;
 
     showGame("Player one", "X", "Player Two", "O");
-    form.reset();
+    // form.reset();
     dialogBox.close();
   });
 
@@ -342,7 +362,21 @@ const takeUserNames = (function () {
     playerTwoName = document.getElementById("player_two").value;
 
     showGame(playerOneName, signPlayerOne, playerTwoName, signPlayerTwo);
-    form.reset();
+    // form.reset();
     dialogBox.close();
   });
+};
+
+restartGame();
+
+const resetGame = (function () {
+  const reset = document.querySelector(".reset");
+  reset.addEventListener("click", () => {
+    takeUserNames();
+    console.clear();
+    document
+      .querySelectorAll(".blocks_for_board")
+      .forEach((block) => block.remove());
+  });
 })();
+takeUserNames();

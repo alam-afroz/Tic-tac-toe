@@ -167,6 +167,7 @@ input[type="text"] {
   font-size: 16px;
   border: none;
   border-radius: 4px;
+  padding-left: 4px;
 }
 .user_player_one,
 .user_player_two {
@@ -193,6 +194,7 @@ button {
   font-size: 24px;
 }
 #play_without_filling {
+  cursor: context-menu;
   height: 77px;
   display: flex;
   align-items: center;
