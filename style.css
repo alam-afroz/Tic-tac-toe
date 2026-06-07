@@ -46,7 +46,7 @@
 }
 .playing_board {
   height: max(40vh, 250px);
-  width: max(40vw, 250px);
+  width: min(400px, 80%);
   grid-row: 3/4;
   grid-column: 2/3;
   border-radius: 8px;
