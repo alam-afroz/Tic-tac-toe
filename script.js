@@ -21,7 +21,7 @@ const playingBoard = () => {
 
 function gameController(player1, sign1, player2, sign2) {
   const gameBoard = playingBoard();
-  let count = true; // this is replaces by boardfull and activeplayer.winStatus
+
   let boardFull = false;
   isBoardFull = () => boardFull;
 
@@ -41,13 +41,9 @@ function gameController(player1, sign1, player2, sign2) {
   let activePlayer = players[0];
 
   const switchPlayerTurn = () => {
-    if (count === false) return;
+    if (getActivePlayer().winStatus === true) return;
+
     if (isBoardFull === true) {
-      // activePlayer = {
-      //   name: getActivePlayer().name,
-      //   sign: getActivePlayer().sign,
-      //   winStatus: getActivePlayer().winStatus,
-      // };
       return;
     }
 
@@ -57,11 +53,10 @@ function gameController(player1, sign1, player2, sign2) {
     if (activePlayer.winStatus === true) {
       return activePlayer;
     }
-    if (count === false) return;
+
     return activePlayer;
   };
   const showNewRound = () => {
-    if (count === false) return;
     if (boardFull === true) {
       return;
     }
@@ -77,25 +72,26 @@ function gameController(player1, sign1, player2, sign2) {
 
   const playRound = (row, column) => {
     board = gameBoard.getBoard();
-    const invalidTurns = (function () {
-      //condition for Invalid turn
-      if (row > 2 || column > 2) {
-        activePlayer = getActivePlayer().sign === "X" ? players[0] : players[1];
-        console.log("Invalid Turn - Row and column out of bound");
-        console.log(`${getActivePlayer().name}'s turn.`);
-        return false;
-      }
+    // This code is no longer needed invalid turns were handled in using dom
+    // const invalidTurns = (function () {
+    //   //condition for Invalid turn
+    //   if (row > 2 || column > 2) {
+    //     activePlayer = getActivePlayer().sign === "X" ? players[0] : players[1];
+    //     console.log("Invalid Turn - Row and column out of bound");
+    //     console.log(`${getActivePlayer().name}'s turn.`);
+    //     return false;
+    //   }
 
-      //condition for already marked block
-      if (board[row][column] === "X" || board[row][column] === "O") {
-        activePlayer = getActivePlayer().sign === "X" ? players[0] : players[1];
-        console.log("Invalid Turn- block already marked");
-        console.log(`${getActivePlayer().name}'s turn.`);
-        return false;
-      }
-      return true;
-    })();
-    if (invalidTurns === false) return;
+    //   //condition for already marked block
+    //   if (board[row][column] === "X" || board[row][column] === "O") {
+    //     activePlayer = getActivePlayer().sign === "X" ? players[0] : players[1];
+    //     console.log("Invalid Turn- block already marked");
+    //     console.log(`${getActivePlayer().name}'s turn.`);
+    //     return false;
+    //   }
+    //   return true;
+    // })();
+    // if (invalidTurns === false) return;
 
     //adding sign to desired place
     if (board[row][column] != "X" || board[row][column] != "O") {
@@ -113,9 +109,8 @@ function gameController(player1, sign1, player2, sign2) {
         board[2][0] != " " &&
         board[2][1] != " " &&
         board[2][2] != " " &&
-        count != false
+        boardFull === false
       ) {
-        // count = false;
         boardFull = true;
         console.log(gameBoard.getBoard());
         console.log("Grid Full");
@@ -144,7 +139,6 @@ function gameController(player1, sign1, player2, sign2) {
           console.log(gameBoard.getBoard());
           console.log("Player 2 won");
           getActivePlayer().winStatus = true;
-          count = false;
 
           return;
         }
@@ -172,8 +166,6 @@ function gameController(player1, sign1, player2, sign2) {
             sign: "X",
             winStatus: true,
           };
-          console.log(getActivePlayer().winStatus);
-          count = false;
 
           return;
         }
@@ -185,7 +177,7 @@ function gameController(player1, sign1, player2, sign2) {
     switchPlayerTurn();
     showNewRound();
   };
-  //This is to print starting board
+  //This is to log board
   showNewRound();
 
   return {
@@ -215,19 +207,22 @@ function showGame(player1, sign1, player2, sign2) {
   let count = true;
 
   const displayBoard = document.querySelector(".playing_board");
+
   const gameStatus = document.querySelector(".game_status");
+
   (function startingGameStatus() {
     gameStatus.style.fontWeight = "normal";
-    gameStatus.style.color = "wheat";
+    gameStatus.style.color = "white";
     gameStatus.textContent = `${game.getActivePlayer().name}'s Turn , Sign : ${game.getActivePlayer().sign}`;
   })();
+
   function updateGameStatus() {
-    gameStatus.style.color = "wheat";
+    gameStatus.style.color = "white";
     gameStatus.textContent = `${game.getActivePlayer().name}'s Turn , Sign : ${game.getActivePlayer().sign}`;
   }
+
   function markingDisplayBoard(block, i, j) {
     if (game.getActivePlayer().winStatus === true) {
-      // gameStatus.textContent = `${game.getActivePlayer().name} has won , Sign : ${game.getActivePlayer().sign}`;
       count = false;
 
       return;
@@ -244,8 +239,11 @@ function showGame(player1, sign1, player2, sign2) {
     updateGameStatus();
   }
 
+  document.querySelector(".player1_info").textContent = `${player1} : ${sign1}`;
+
+  document.querySelector(".player2_info").textContent = `${player2} : ${sign2}`;
+
   function showWinner() {
-    // if (count === false) return;
     if (game.getActivePlayer().winStatus === true) {
       gameStatus.style.color = "green";
       gameStatus.style.fontWeight = "bold";
@@ -255,8 +253,6 @@ function showGame(player1, sign1, player2, sign2) {
   }
   const container = document.querySelector(".container");
 
-  // gameStatus.textContent = `${game.getActivePlayer().name}'s Turn , Sign : ${game.getActivePlayer().sign}`;
-  // const board = playingBoard.gameBoard;
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
       const block = document.createElement("div");
@@ -267,7 +263,6 @@ function showGame(player1, sign1, player2, sign2) {
       block.addEventListener("click", () => {
         markingDisplayBoard(block, i, j);
 
-        // updateGameStatus();
         showWinner();
 
         if (game.isBoardFull() === true) {
@@ -277,13 +272,8 @@ function showGame(player1, sign1, player2, sign2) {
       });
     }
   }
-  // const playerInfo = () => {
-  //   return [player1, sign1, player2, sign2];
-  // };
-  restartGame(player1, sign1, player2, sign2);
 
-  // return playerInfo();
-  return displayBoard;
+  restartGame(player1, sign1, player2, sign2);
 }
 
 const takeUserNames = function () {
@@ -294,40 +284,41 @@ const takeUserNames = function () {
   const inputPlayerOne = document.getElementById("player_one");
 
   const inputPlayerTwo = document.getElementById("player_two");
-  // const disableRadios = (function (e) {
-  const radioForPlayerOneSignX = document.querySelector("#player_one_sign_X");
-  const radioForPlayerTwoSignX = document.querySelector("#player_two_sign_X");
-  const radioForPlayerOneSignO = document.querySelector("#player_one_sign_O");
-  const radioForPlayerTwoSignO = document.querySelector("#player_two_sign_O");
-  radioForPlayerOneSignX.addEventListener("change", (e) => {
-    radioForPlayerTwoSignO.disabled = true;
+  const disableRadios = (function (e) {
+    const radioForPlayerOneSignX = document.querySelector("#player_one_sign_X");
+    const radioForPlayerTwoSignX = document.querySelector("#player_two_sign_X");
+    const radioForPlayerOneSignO = document.querySelector("#player_one_sign_O");
+    const radioForPlayerTwoSignO = document.querySelector("#player_two_sign_O");
+    radioForPlayerOneSignX.addEventListener("change", (e) => {
+      radioForPlayerTwoSignO.disabled = true;
 
-    radioForPlayerOneSignO.checked = false;
-    radioForPlayerTwoSignX.disabled = true;
-    radioForPlayerTwoSignO.checked = true;
-  });
-  radioForPlayerTwoSignX.addEventListener("change", (e) => {
-    radioForPlayerOneSignO.disabled = false;
-    radioForPlayerOneSignX.disabled = true;
-    radioForPlayerOneSignO.checked = true;
-    radioForPlayerTwoSignO.checked = false;
-  });
-  radioForPlayerOneSignO.addEventListener("change", (e) => {
-    radioForPlayerTwoSignX.disabled = false;
-    radioForPlayerOneSignX.checked = false;
-    radioForPlayerTwoSignX.checked = true;
-    radioForPlayerTwoSignO.disabled = true;
-  });
-  radioForPlayerTwoSignO.addEventListener("change", (e) => {
-    radioForPlayerOneSignX.disabled = false;
+      radioForPlayerOneSignO.checked = false;
+      radioForPlayerTwoSignX.disabled = true;
+      radioForPlayerTwoSignO.checked = true;
+    });
+    radioForPlayerTwoSignX.addEventListener("change", (e) => {
+      radioForPlayerOneSignO.disabled = false;
+      radioForPlayerOneSignX.disabled = true;
+      radioForPlayerOneSignO.checked = true;
+      radioForPlayerTwoSignO.checked = false;
+    });
+    radioForPlayerOneSignO.addEventListener("change", (e) => {
+      radioForPlayerTwoSignX.disabled = false;
+      radioForPlayerOneSignX.checked = false;
+      radioForPlayerTwoSignX.checked = true;
+      radioForPlayerTwoSignO.disabled = true;
+    });
+    radioForPlayerTwoSignO.addEventListener("change", (e) => {
+      radioForPlayerOneSignX.disabled = false;
 
-    radioForPlayerOneSignX.checked = true;
-    radioForPlayerOneSignO.disabled = true;
-    radioForPlayerTwoSignX.checked = false;
-  });
+      radioForPlayerOneSignX.checked = true;
+      radioForPlayerOneSignO.disabled = true;
+      radioForPlayerTwoSignX.checked = false;
+    });
+  })();
 
-  // })();
   const playWithoutFilling = document.getElementById("play_without_filling");
+
   playWithoutFilling.addEventListener("click", () => {
     document.getElementById("player_one").required = false;
 
@@ -342,7 +333,7 @@ const takeUserNames = function () {
     document.getElementById("player_two_sign_O").required = false;
 
     showGame("Player one", "X", "Player Two", "O");
-    // form.reset();
+    form.reset();
     dialogBox.close();
   });
 
@@ -362,7 +353,7 @@ const takeUserNames = function () {
     playerTwoName = document.getElementById("player_two").value;
 
     showGame(playerOneName, signPlayerOne, playerTwoName, signPlayerTwo);
-    // form.reset();
+
     dialogBox.close();
   });
 };
