@@ -1,6 +1,7 @@
 # Tic-tac-toe
 
-## A Tic Tac Toe Game which can be played on mobile and laptop
+## A Tic Tac Toe Game which can be played on mobile and laptop devices
+
 
 ![](/images/web_page_preview.png)
 
